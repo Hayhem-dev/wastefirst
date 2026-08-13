@@ -137,7 +137,9 @@ const USSD_FLOWS = {
   "1-3": `✅ Pickup Scheduled!\n\nDate: Tomorrow\nTime: 2:00 PM\nPSP: AkiClean Services\n\nYou'll get SMS alert\n1hr before arrival.\n\nRef: WF-2026-0814`,
 };
 
-export default function HouseholdApp() {
+export default function HouseholdApp({ user = {} }) {
+  const userName = user.name || "Guest";
+  const userInitials = userName.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
   const [screen, setScreen] = useState("home");
   const [ussdInput, setUssdInput] = useState("");
   const [ussdPath, setUssdPath] = useState("");
@@ -147,6 +149,8 @@ export default function HouseholdApp() {
   const [toast, setToast] = useState(null);
   const [connectedPSP, setConnectedPSP] = useState(PSP_DATA[0]);
   const [sortWeights, setSortWeights] = useState({ plastic: 2.3, organic: 1.1, general: 0 });
+  const [showFundModal, setShowFundModal] = useState(false);
+  const [fundAmount, setFundAmount] = useState("");
   const [showModal, setShowModal] = useState(null);
 
   const showToast = (msg) => {
@@ -185,7 +189,7 @@ export default function HouseholdApp() {
       <div style={styles.heroCard}>
         <div style={styles.heroOverlay} />
         <div style={styles.heroTitle}>Good morning 👋</div>
-        <div style={styles.heroName}>Chisom Adeyemi</div>
+        <div style={styles.heroName}>{userName}</div>
         <div style={styles.heroStats}>
           <div style={styles.heroStat}>
             <div style={styles.heroStatVal}>₦7,243</div>
@@ -224,6 +228,7 @@ export default function HouseholdApp() {
           { icon: "♻️", label: "SortPay", sub: "Earn from sorting", screen: "sort" },
           { icon: "🚨", label: "Report Dump", sub: "Earn from fines", screen: "report" },
           { icon: "📱", label: "USSD Mode", sub: "No internet needed", screen: "ussd" },
+          { icon: "💳", label: "Add Funds", sub: "Top up wallet", screen: "addfunds" },
         ].map(q => (
           <div key={q.label} style={styles.quickCard} onClick={() => setScreen(q.screen)}>
             <div style={styles.quickIcon}>{q.icon}</div>
@@ -347,6 +352,7 @@ export default function HouseholdApp() {
           <button style={styles.walletBtn} onClick={() => showToast("💸 Withdraw initiated")}>Withdraw</button>
           <button style={styles.walletBtn} onClick={() => showToast("📱 Converting to airtime...")}>→ Airtime</button>
           <button style={styles.walletBtn} onClick={() => showToast("💳 Paying subscription...")}>Pay Sub</button>
+          <button style={{ ...styles.walletBtn, background: "rgba(245,166,35,0.3)", color: "#F5A623", fontWeight: 700 }} onClick={() => setShowFundModal(true)}>➕ Add Funds</button>
         </div>
       </div>
 
@@ -559,7 +565,34 @@ export default function HouseholdApp() {
     </div>
   );
 
-  const screens = { home: HomeScreen, collect: CollectScreen, sort: SortPayScreen, report: ReportScreen, map: MapScreen, ussd: USSDScreen };
+  const AddFundsModal = () => showFundModal ? (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 200, display: "flex", alignItems: "flex-end" }}>
+      <div style={{ background: "#fff", borderRadius: "20px 20px 0 0", padding: "24px 20px 36px", width: "100%", maxWidth: 420, margin: "0 auto", boxSizing: "border-box" }}>
+        <div style={{ fontSize: 18, fontWeight: 800, color: "#0F2419", marginBottom: 4 }}>💳 Add Funds</div>
+        <div style={{ fontSize: 13, color: "#8AA698", marginBottom: 20 }}>Top up your WasteFirst wallet instantly</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 16 }}>
+          {["₦500", "₦1,000", "₦2,000", "₦5,000", "₦10,000", "₦20,000"].map(amt => (
+            <div key={amt} onClick={() => setFundAmount(amt.replace("₦","").replace(",",""))} style={{ background: fundAmount === amt.replace("₦","").replace(",","") ? "#1B6B3A" : "#F7FAF8", color: fundAmount === amt.replace("₦","").replace(",","") ? "#fff" : "#0F2419", border: `1.5px solid ${fundAmount === amt.replace("₦","").replace(",","") ? "#1B6B3A" : "#DCE8E0"}`, borderRadius: 10, padding: "12px 6px", textAlign: "center", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>{amt}</div>
+          ))}
+        </div>
+        <div style={{ marginBottom: 14 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: "#4A6355", marginBottom: 6 }}>Or enter custom amount (₦)</div>
+          <input style={{ width: "100%", padding: "13px 14px", borderRadius: 10, border: "1.5px solid #DCE8E0", fontSize: 16, background: "#F7FAF8", boxSizing: "border-box", outline: "none", color: "#0F2419" }} type="number" placeholder="e.g. 3000" value={fundAmount} onChange={e => setFundAmount(e.target.value)} />
+        </div>
+        <div style={{ background: "#E8F5EE", borderRadius: 10, padding: "10px 14px", marginBottom: 16 }}>
+          <div style={{ fontSize: 12, color: "#1B6B3A" }}>💰 Amount to add: <strong>₦{fundAmount ? Number(fundAmount).toLocaleString() : "0"}</strong></div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+          {[{ icon: "🏦", label: "Bank Transfer" }, { icon: "💳", label: "Card" }, { icon: "📱", label: "USSD" }, { icon: "📞", label: "Airtime" }].map(m => (
+            <button key={m.label} style={{ background: "#F7FAF8", border: "1.5px solid #DCE8E0", borderRadius: 10, padding: "12px", fontSize: 13, fontWeight: 600, cursor: "pointer", color: "#0F2419" }} onClick={() => { if (fundAmount) { showToast("✅ ₦" + Number(fundAmount).toLocaleString() + " added via " + m.label + "!"); setShowFundModal(false); setFundAmount(""); } else showToast("⚠️ Enter an amount first"); }}>{m.icon} {m.label}</button>
+          ))}
+        </div>
+        <button style={{ width: "100%", background: "transparent", border: "1.5px solid #DCE8E0", borderRadius: 10, padding: "12px", fontSize: 14, fontWeight: 600, cursor: "pointer", color: "#8AA698" }} onClick={() => { setShowFundModal(false); setFundAmount(""); }}>Cancel</button>
+      </div>
+    </div>
+  ) : null;
+
+  const screens = { home: HomeScreen, collect: CollectScreen, sort: SortPayScreen, report: ReportScreen, map: MapScreen, ussd: USSDScreen, addfunds: SortPayScreen };
   const ActiveScreen = screens[screen] || HomeScreen;
 
   return (
@@ -573,12 +606,13 @@ export default function HouseholdApp() {
             🔔
             <div style={styles.notifBadge} />
           </div>
-          <div style={styles.avatar}>CA</div>
+          <div style={styles.avatar}>{userInitials}</div>
         </div>
       </div>
       <div style={styles.content}>
         <ActiveScreen />
       </div>
+      <AddFundsModal />
       <NavBar />
     </div>
   );
