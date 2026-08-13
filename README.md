@@ -50,11 +50,19 @@ vite.config.js
 
 ## Notes
 
+- **Sign up / log in is a client-side demo gate**, not real authentication.
+  On sign-up, a 4-digit code is generated and shown directly on screen
+  (labeled as a demo code) instead of being texted — there's no SMS/email
+  service wired up yet. Accounts are stored in the browser's `localStorage`,
+  so they're per-device only: a tester who signs up on their phone won't see
+  that account on a laptop, and clearing browser storage resets it.
+  This is enough to gate a small beta test; a real multi-device launch will
+  need a backend (accounts in a database, real SMS/OTP or email verification).
 - No UI kit or icon library — screens use inline styles and emoji, so there
   are no extra dependencies to install beyond React itself.
-- All data (PSPs, requests, wallet balances, reports) is mocked in component
-  state; wire up a backend/API before this goes further than a clickable
-  prototype.
+- All in-app data (PSPs, requests, wallet balances, reports) is mocked in
+  component state and resets on refresh; wire up a backend/API before this
+  goes further than a clickable prototype.
 - The two apps are independent components sharing one design system
   (colors, spacing, card/button styles) — in a real build they'd likely
   ship as separate deployments (household app vs. PSP-facing web app),
