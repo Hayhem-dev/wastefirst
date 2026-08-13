@@ -80,7 +80,7 @@ export default function App() {
     setUser(null);
   };
 
-  if (!checked) return null; // avoid a flash of the auth screen while checking localStorage
+  if (!checked) return null;
 
   if (!user) {
     return <Auth onAuthed={handleAuthed} />;
@@ -99,7 +99,7 @@ export default function App() {
         </div>
         <button style={logoutBtn} onClick={handleLogout}>Log out</button>
       </div>
-      {view === "household" ? <HouseholdApp /> : <PSPApp />}
+      {view === "household" ? <HouseholdApp user={user} /> : <PSPApp user={user} />}
     </div>
   );
 }
