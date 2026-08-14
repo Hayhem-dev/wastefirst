@@ -136,7 +136,7 @@ export default function Auth({ onAuthed }) {
     setError("");
   };
 
-  const submitSignup = (e) => {
+  const submitSignup = async (e) => {
     e.preventDefault();
     setError("");
     if (!name.trim()) return setError("Enter your name.");
@@ -145,6 +145,14 @@ export default function Auth({ onAuthed }) {
     if (users.some((u) => u.phone === phone)) {
       return setError("This number is already registered — try logging in instead.");
     }
+    // Sync with backend API
+    try {
+      await fetch("https://wastefirst.onrender.com/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), phone, email: phone + "@wastefirst.ng", role }),
+      });
+    } catch (_) { /* continue even if API is offline */ }
     const code = genCode();
     setSentCode(code);
     setStep("verify");
@@ -163,12 +171,27 @@ export default function Auth({ onAuthed }) {
     onAuthed(newUser);
   };
 
-  const submitLogin = (e) => {
+  const submitLogin = async (e) => {
     e.preventDefault();
     setError("");
     const users = loadUsers();
     const found = users.find((u) => u.phone === phone.replace(/\s/g, ""));
     if (!found) return setError("No account found on this device — sign up first.");
+    // Sync with backend API
+    try {
+      const res = await fetch("https://wastefirst.onrender.com/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: phone.replace(/\s/g, "") }),
+      });
+      const data = await res.json();
+      if (data.status === "success" && data.data && data.data.user) {
+        const apiUser = { ...found, ...data.data.user };
+        localStorage.setItem(SESSION_KEY, JSON.stringify(apiUser));
+        onAuthed(apiUser);
+        return;
+      }
+    } catch (_) { /* fallback to local */ }
     localStorage.setItem(SESSION_KEY, JSON.stringify(found));
     onAuthed(found);
   };
