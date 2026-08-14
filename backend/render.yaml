@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: wastefirst-api
+    name: dati-api
     env: node
     region: frankfurt
     plan: free

@@ -1,4 +1,4 @@
-// WasteFirst API Configuration
+// Dati API Configuration
 // Switches automatically between local dev and production
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'https://wastefirst.onrender.com/api';

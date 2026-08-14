@@ -100,8 +100,8 @@ const styles = {
   },
 };
 
-const USERS_KEY = "wastefirst_users";
-const SESSION_KEY = "wastefirst_session";
+const USERS_KEY = "dati_users";
+const SESSION_KEY = "dati_session";
 
 function loadUsers() {
   try {
@@ -150,7 +150,7 @@ export default function Auth({ onAuthed }) {
       await fetch("https://wastefirst.onrender.com/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), phone, email: phone + "@wastefirst.ng", role }),
+        body: JSON.stringify({ name: name.trim(), phone, email: phone + "@dati.ng", role }),
       });
     } catch (_) { /* continue even if API is offline */ }
     const code = genCode();
@@ -200,7 +200,7 @@ export default function Auth({ onAuthed }) {
     <div style={styles.wrap}>
       <div style={styles.card}>
         <div style={styles.logo}>
-          Waste<span style={styles.logoAccent}>First</span>
+          Dat<span style={styles.logoAccent}>i</span>
         </div>
         <div style={styles.tagline}>Closed beta — thanks for testing with us</div>
 
@@ -283,7 +283,7 @@ export default function Auth({ onAuthed }) {
         )}
 
         <div style={styles.betaNote}>
-          This is an early beta build for WasteFirst — data you enter stays on
+          This is an early beta build for Dati — data you enter stays on
           this device only and may be reset as we keep testing.
         </div>
       </div>

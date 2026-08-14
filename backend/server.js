@@ -76,7 +76,7 @@ const paginate = (arr, page = 1, limit = 10) => {
 // ============================================================
 app.get('/', (req, res) => {
   success(res, {
-    name: 'WasteFirst API',
+    name: 'Dati API',
     version: '1.0.0',
     description: 'Lagos waste management platform API',
     endpoints: {
@@ -91,7 +91,7 @@ app.get('/', (req, res) => {
       lawma: ['GET /api/lawma/dashboard', 'GET /api/lawma/reports', 'PUT /api/lawma/reports/:id', 'GET /api/lawma/psps', 'GET /api/lawma/analytics'],
       ussd: ['POST /api/ussd'],
     }
-  }, 'WasteFirst API is running');
+  }, 'Dati API is running');
 });
 
 // ============================================================
@@ -373,7 +373,7 @@ app.post('/api/ussd', (req, res) => {
   const inputs = text ? text.split('*') : [];
   const level = inputs.length;
   if (text === '' || text === undefined) {
-    response = `CON Welcome to WasteFirst\n*483*1#\n\n1. Schedule Pickup\n2. SortPay Balance\n3. Report Illegal Dump\n4. Find PSP Near Me\n5. Pay Subscription\n0. Exit`;
+    response = `CON Welcome to Dati\n*483*1#\n\n1. Schedule Pickup\n2. SortPay Balance\n3. Report Illegal Dump\n4. Find PSP Near Me\n5. Pay Subscription\n0. Exit`;
   } else if (inputs[0] === '1' && level === 1) {
     response = `CON Schedule Pickup\n\nAvailable slots:\n1. Tomorrow 8:00 AM\n2. Tomorrow 11:00 AM\n3. Tomorrow 2:00 PM\n4. Thursday 8:00 AM\n\n0. Back`;
   } else if (inputs[0] === '1' && level === 2) {
@@ -394,7 +394,7 @@ app.post('/api/ussd', (req, res) => {
   } else if (inputs[0] === '5' && inputs[1] === '1') {
     response = `END Payment Successful!\n\nAmount: ₦1,500\nMethod: Airtime deduction\nPlan: Standard (30 days)\n\nRef: WF-PAY-${Date.now().toString().slice(-6)}\nThank you!`;
   } else if (inputs[0] === '0') {
-    response = `END Thank you for using WasteFirst!\n\nKeep Lagos clean.\nDial *483*1# anytime.`;
+    response = `END Thank you for using Dati!\n\nKeep Lagos clean.\nDial *483*1# anytime.`;
   } else {
     response = `CON Invalid option.\n\nPlease try again.\n\n0. Back to main menu`;
   }
@@ -409,6 +409,6 @@ app.use((req, res) => error(res, `Route ${req.method} ${req.url} not found`, 404
 app.use((err, req, res, next) => { console.error(err); error(res, 'Internal server error', 500); });
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`\n🟢 WasteFirst API running on http://localhost:${PORT}\n📖 Docs: http://localhost:${PORT}/\n`));
+app.listen(PORT, () => console.log(`\n🟢 Dati API running on http://localhost:${PORT}\n📖 Docs: http://localhost:${PORT}/\n`));
 
 module.exports = app;

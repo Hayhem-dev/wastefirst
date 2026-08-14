@@ -1,4 +1,4 @@
-# 🗑️ WasteFirst
+# 🗑️ Dati
 
 > Lagos Waste Management Super-App — connecting households, PSP operators, and LAWMA
 
@@ -9,7 +9,7 @@
 ## Project Structure
 
 ```
-wastefirst/
+dati/
 ├── frontend/          ← React app (deploy on Vercel)
 │   ├── src/
 │   │   ├── App.jsx

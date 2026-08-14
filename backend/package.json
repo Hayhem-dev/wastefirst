@@ -1,7 +1,7 @@
 {
-  "name": "wastefirst-backend",
+  "name": "dati-backend",
   "version": "1.0.0",
-  "description": "WasteFirst API - Lagos Waste Management Platform",
+  "description": "Dati API - Lagos Waste Management Platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

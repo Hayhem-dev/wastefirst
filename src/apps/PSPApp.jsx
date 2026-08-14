@@ -427,7 +427,7 @@ export default function PSPApp() {
       {toast && <div style={styles.toast}>{toast}</div>}
       <div style={styles.header}>
         <div style={styles.logo}>
-          Waste<span style={styles.logoAccent}>First</span>
+          Dat<span style={styles.logoAccent}>i</span>
           <span style={styles.headerTag}>PSP</span>
         </div>
         <div style={styles.avatar}>CP</div>

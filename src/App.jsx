@@ -3,7 +3,7 @@ import HouseholdApp from "./apps/HouseholdApp.jsx";
 import PSPApp from "./apps/PSPApp.jsx";
 import Auth from "./Auth.jsx";
 
-const SESSION_KEY = "wastefirst_session";
+const SESSION_KEY = "dati_session";
 
 const wrap = {
   minHeight: "100vh",

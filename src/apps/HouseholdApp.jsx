@@ -126,7 +126,7 @@ const REPORTS = [
 ];
 
 const USSD_FLOWS = {
-  "": `Welcome to WasteFirst\n*483*1#\n\n1. Schedule Pickup\n2. SortPay Balance\n3. Report Illegal Dump\n4. Find PSP Near Me\n5. Pay Subscription\n\nReply with option:`,
+  "": `Welcome to Dati\n*483*1#\n\n1. Schedule Pickup\n2. SortPay Balance\n3. Report Illegal Dump\n4. Find PSP Near Me\n5. Pay Subscription\n\nReply with option:`,
   "1": `Schedule Pickup\n\nNext available slots:\n1. Tomorrow 8:00 AM\n2. Tomorrow 11:00 AM\n3. Tomorrow 2:00 PM\n\nReply with slot number:`,
   "2": `SortPay Balance\n\nWallet: ₦7,243\nThis month earned: ₦1,243\nSortings: 8 verified\n\n1. Withdraw to bank\n2. Convert to airtime\n3. Back to menu`,
   "3": `Report Illegal Dump\n\nSend location as:\nStreet name + LGA\n\nExample:\n"Allen Ave, Ikeja"\n\nType location:`,
@@ -523,12 +523,12 @@ export default function HouseholdApp({ user = {} }) {
     <div>
       <div style={{ ...styles.card, borderLeft: `4px solid ${COLORS.primary}` }}>
         <div style={{ fontSize: 14, fontWeight: 700, color: COLORS.textPrimary, marginBottom: 4 }}>📱 USSD Mode</div>
-        <div style={{ fontSize: 13, color: COLORS.textSecondary }}>No internet? No problem. Use WasteFirst on any phone via *483*1# — works on MTN, Airtel, Glo, and 9mobile.</div>
+        <div style={{ fontSize: 13, color: COLORS.textSecondary }}>No internet? No problem. Use Dati on any phone via *483*1# — works on MTN, Airtel, Glo, and 9mobile.</div>
       </div>
 
       <div style={styles.sectionTitle}>USSD Simulator — *483*1#</div>
       <div style={styles.ussdCard}>
-        <div style={styles.ussdTitle}>📱 WasteFirst USSD Terminal</div>
+        <div style={styles.ussdTitle}>📱 Dati USSD Terminal</div>
         <div style={styles.ussdScreen}>
           <pre style={{ ...styles.ussdText, margin: 0, whiteSpace: "pre-wrap" }}>{ussdDisplay}</pre>
         </div>
@@ -569,7 +569,7 @@ export default function HouseholdApp({ user = {} }) {
     <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 200, display: "flex", alignItems: "flex-end" }}>
       <div style={{ background: "#fff", borderRadius: "20px 20px 0 0", padding: "24px 20px 36px", width: "100%", maxWidth: 420, margin: "0 auto", boxSizing: "border-box" }}>
         <div style={{ fontSize: 18, fontWeight: 800, color: "#0F2419", marginBottom: 4 }}>💳 Add Funds</div>
-        <div style={{ fontSize: 13, color: "#8AA698", marginBottom: 20 }}>Top up your WasteFirst wallet instantly</div>
+        <div style={{ fontSize: 13, color: "#8AA698", marginBottom: 20 }}>Top up your Dati wallet instantly</div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 16 }}>
           {["₦500", "₦1,000", "₦2,000", "₦5,000", "₦10,000", "₦20,000"].map(amt => (
             <div key={amt} onClick={() => setFundAmount(amt.replace("₦","").replace(",",""))} style={{ background: fundAmount === amt.replace("₦","").replace(",","") ? "#1B6B3A" : "#F7FAF8", color: fundAmount === amt.replace("₦","").replace(",","") ? "#fff" : "#0F2419", border: `1.5px solid ${fundAmount === amt.replace("₦","").replace(",","") ? "#1B6B3A" : "#DCE8E0"}`, borderRadius: 10, padding: "12px 6px", textAlign: "center", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>{amt}</div>
@@ -600,7 +600,7 @@ export default function HouseholdApp({ user = {} }) {
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       {toast && <div style={styles.toast}>{toast}</div>}
       <div style={styles.header}>
-        <div style={styles.logo}>Waste<span style={styles.logoAccent}>First</span></div>
+        <div style={styles.logo}>Dat<span style={styles.logoAccent}>i</span></div>
         <div style={styles.headerRight}>
           <div style={{ fontSize: 22, cursor: "pointer", position: "relative" }} onClick={() => showToast("🔔 3 new notifications")}>
             🔔
